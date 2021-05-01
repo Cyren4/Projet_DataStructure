@@ -45,5 +45,6 @@ Cellule_arete*  insererArrete(Cellule_arete* L_voisin, int u, int v);
 Cellule_arete*  ajoutArrete(CellNoeud* n, int num);
 void            majArrete(Graphe* g);
 Cellule_arete*  enteteArrete(Cellule_arete* tete, Arete* a);
+void    libererGraphe(Graphe *g);
 
 #endif

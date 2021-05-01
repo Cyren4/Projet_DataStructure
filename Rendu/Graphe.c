@@ -105,3 +105,25 @@ Cellule_arete*  enteteArrete(Cellule_arete* tete, Arete* a){
     new->suiv = tete;
     return new;
 }
+
+void liberer_CellArete(int num, Cellule_arete* Ca){
+    Cellule_arete* tmpCa;
+
+    while(Ca != NULL){
+        tmpCa = Ca;
+        if (Ca->a->v == num)
+            free(Ca->a);
+        Ca = Ca->suiv;
+        free(tmpCa);
+    }
+}
+
+void    libererGraphe(Graphe *g){
+    for (int i = 0; i < g->nbsom; i++){
+        liberer_CellArete(i, g->T_som[i]->L_voisin);
+        free(g->T_som[i]);
+    }
+    free(g->T_som);
+    free(g->T_commod);
+    free(g);
+}
