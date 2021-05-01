@@ -27,7 +27,7 @@ static CellPoint*  lire_points(char* ligne, int nbP){//lit les nbP points d'une 
 
 Chaines*    lectureChaines(FILE *f){
     char    ligne[256];
-    int     nbChain;
+    int     nbChain,nbChaines;
     int     gamma;
     int     numChaine;
     int     nbPoints;
@@ -39,6 +39,7 @@ Chaines*    lectureChaines(FILE *f){
         printf("Erreur lecture : lectureChaines - NbChain\n");
         return NULL;
     }
+    nbChaines = nbChain;
     fgets(ligne, 256, f);
     if (sscanf(ligne, "Gamma: %d", &gamma) != 1){
         printf("Erreur lecture : lectureChaines - Gamma\n");
@@ -57,7 +58,7 @@ Chaines*    lectureChaines(FILE *f){
         cellChain = inserer_CellChaine(cellChain, numChaine, lire_points(ligne, nbPoints));
         nbChain--;
     }
-    c = creer_Chaines(gamma, nbChain, cellChain);
+    c = creer_Chaines(gamma, nbChaines, cellChain);
     return c;
 }
 
