@@ -53,20 +53,19 @@ CellChaine*  inserer_CellChaine(CellChaine* c, int num, CellPoint* points){
 
 /* liberation */
 
-void    liberer_CellPoint(CellPoint* c){
-    if (c != NULL)
-        free(c);
-}
-
 void    liberer_cellChaine(CellChaine* c){
-    if (c != NULL){
-        CellPoint* tmp;
+    	CellChaine* tmpC = c;
+	CellPoint* tmpP;
+
+    while (c != NULL){
         while (c->points != NULL){
-            tmp = c->points;
+            tmpP = c->points;
             c->points = c->points->suiv;
-            liberer_CellPoint(tmp);
+	    free(tmpP);
         }
-        free(c);
+	tmpC = c;
+	c = c->suiv;
+        free(tmpC);
     }
 }
 

@@ -34,7 +34,6 @@ CellChaine* creer_cellChaine(int num, CellPoint* points);
 Chaines*    creer_Chaines(int gamma, int nbChaines, CellChaine* chaines);
 CellPoint*  inserer_CellPoint(CellPoint* c, double x, double y);
 CellChaine* inserer_CellChaine(CellChaine* c, int num, CellPoint* points);
-void        liberer_CellPoint(CellPoint* c);
 void        liberer_cellChaine(CellChaine* c);
 void        liberer_Chaines(Chaines* c);
 
