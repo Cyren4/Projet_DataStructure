@@ -20,12 +20,12 @@ SRCS	=	gestionChaine.c gestionReseau.c gestionGraphe.c\
 			testFunction.c \
 			ReconstitueReseau.c
 			# ChaineMain.c
-			# ReseauMain.c
+			#ReseauMain.c
 			# speedtest6_1.c
-			# speedtest6_3.c
+			#speedtest6_3.c
 
 projet :	$(OBJS)
-			$(CC) -o $@ $(CFLAGS) $^ 
+			$(CC) -o $@ $(CFLAGS) $^ -lm 
 
 %.o		:	%.c %.h
 			$(CC)  $(GCC_FLAGS) -c  $< 
