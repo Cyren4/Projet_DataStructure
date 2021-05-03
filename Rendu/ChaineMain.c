@@ -1,5 +1,6 @@
 #include "SVGwriter.h" //Chaine.h y est inclut
 #include "Chaine.h"
+
 //tester toutes les fonctions de l'exercice 1
 int main(int ac, char** av){
   if (ac < 2){

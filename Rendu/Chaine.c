@@ -62,7 +62,6 @@ Chaines*    lectureChaines(FILE *f){
     return c;
 }
 
-
 void ecrireChaines(Chaines *c, FILE *f){
     CellChaine* tmpChaine = c->chaines;
     CellPoint*  tmpPoints;
@@ -83,14 +82,11 @@ void ecrireChaines(Chaines *c, FILE *f){
         fputs("\n", f);
 
         nbPoints = 1;
-
         tmpChaine = tmpChaine->suiv;
     }
 }
 
-
 void afficheChainesSVG(Chaines *C, char* nomInstance){
-    // int i;
     double maxx = 0, maxy = 0, minx = 1e6, miny = 1e6;
     double precx, precy;
     CellChaine  *ccour;

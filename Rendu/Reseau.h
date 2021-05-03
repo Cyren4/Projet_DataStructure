@@ -46,11 +46,11 @@ Reseau*         alloueReseau(char *message);
 CellNoeud*      alloueCellNoeud(char *message);
 void            liberer_Reseau(Reseau* r);
 void            majVoisin(Noeud* n, Noeud* nvoisin);
+Noeud*          ajoutNoeudReseau(Reseau* R, double x, double y);
 
 /* mesureReseau */
 int             nbLiaisons(Reseau *R);
 int             nbCommodites(Reseau *R);
-
 
 #endif
 

@@ -2,6 +2,35 @@
 #include "Hachage.h"
 #include "ArbreQuat.h"
 #include "Graphe.h"
+#define TEST 3
+
+
+void  testEcritureReseau(Reseau *r){
+  FILE*     fr = fopen("Reconstitue.res","w");
+
+  if (fr == NULL)
+    return;
+  ecrireReseau(r, fr);
+  fclose(fr);
+}
+
+void afficheArrete(Graphe* g){
+  printf("g : %d %d %d\n", g->gamma, g->nbcommod, g->nbsom);
+  for(int i = 0; i < g->nbsom; i++){
+    printf("Sommet %d\n", i);
+    for (Cellule_arete* tmpC = g->T_som[i]->L_voisin; tmpC != NULL; tmpC = tmpC->suiv)
+      printf("%d %d \n", tmpC->a->u, tmpC->a->v);
+  }
+}
+
+void  testChemin(Graphe *g){
+  printf("\n\nChemin le plus court entre {%d, %d} de taille %d\n", g->T_commod[TEST].e1, g->T_commod[TEST].e2, tailleCheminCourt(g, g->T_commod[TEST].e1, g->T_commod[TEST].e2));
+  ListeEntier* L = cheminCourt(g, g->T_commod[TEST].e1, g->T_commod[TEST].e2);
+  for (ListeEntier c = *L; c != NULL; c = c->suiv)
+    printf("%d ", c->u);
+  desalloue(L);
+  free(L);
+}
 
 //return -1 si les arguments en ligne de commande ne sont pas valide
 //return numero associé a une structure sinon
@@ -47,7 +76,6 @@ int main(int ac, char** av){
   if ((c = check_args(ac, av, &typeStruc)) == NULL)
     return -1;
   Reseau *r = NULL;
-  FILE*     fr = fopen("Reconstitue.res","w");
 
 
   switch (typeStruc){
@@ -69,17 +97,20 @@ int main(int ac, char** av){
   default:
     break;
   }
-  // ecrireReseau(r, fr);
 
   propChaine(c);//affiche les propriété de la chaine lu
   propReseau(r);//affiche les propriété du reseau reconstitué
 
-  afficheReseauSVG(r, "nomInstanceReseau");
-  afficheChainesSVG(c, "nomInstanceChaine");
-  // Graphe* g  = creerGraphe(r);
-  // printf("g : %d %d %d\n", g->gamma, g->nbcommod, g->nbsom);
+  // afficheReseauSVG(r, "nomInstanceReseau");
+  // afficheChainesSVG(c, "nomInstanceChaine");
+  Graphe* g  = creerGraphe(r);
+  
+  // afficheArrete(g);
+  // testChemin(g);
+  printf("reorganise : %d\n", reorganiseReseau(r));
+  
 
-  fclose(fr);
+  libererGraphe(g);
   liberer_Chaines(c);
   liberer_Reseau(r);
 }

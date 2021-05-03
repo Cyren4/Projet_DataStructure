@@ -4,7 +4,7 @@
 void chaineCoordMinMax(Chaines* c, double* xmin, double* ymin, double* xmax, double* ymax){
     CellChaine *tmpC;
     CellPoint *tmpP;
-
+    // recherche des coordonnés minimal et maximal en parcourant la chaine
     for (tmpC = c->chaines; tmpC != NULL; tmpC = tmpC->suiv) {
       for (tmpP = tmpC->points; tmpP != NULL; tmpP = tmpP->suiv){
             if(tmpP->x < *xmin)
@@ -66,16 +66,15 @@ void insererNoeudArbre(Noeud* n, ArbreQuat** a, ArbreQuat* parent){
 
 Noeud* rechercheCreeNoeudArbre(Reseau* R, ArbreQuat** a, ArbreQuat* parent, double x, double y){
 
-  if (*a == NULL) {
-    //aucun noeud en (x,y). Creation:
-    CellNoeud* tmpCN = ajoutNoeudReseau(R, x, y);
+  if (*a == NULL) {//aucun noeud en (x,y). Creation:
+    CellNoeud* tmpCN = ajoutCellNoeudReseau(R, x, y);
     insererNoeudArbre(tmpCN->nd, a, parent);
     return tmpCN->nd;
   } else if (((*a)->noeud != NULL)){
     if ((*a)->noeud->x == x && (*a)->noeud->y == y){
       return (*a)->noeud;
     }
-    CellNoeud* tmpCN = ajoutNoeudReseau(R, x, y);
+    CellNoeud* tmpCN = ajoutCellNoeudReseau(R, x, y);
     insererNoeudArbre(tmpCN->nd, a, parent);
     return tmpCN->nd; 
   }
@@ -113,6 +112,7 @@ Reseau* reconstitueReseauArbre(Chaines* C){
   Noeud* n, *nSuiv, *nPrec;
   r->nbNoeuds = 0;
   r->gamma = C->gamma;
+  //si on est au premier élément de la liste alors on ne fait la maj des voisins que du suivant, sinon du suivant et précédent
   int premier = 0;
   double coteX, coteY,xmin,ymin;
   getCote(C, &coteX, &coteY, &xmin, &ymin);
@@ -120,7 +120,7 @@ Reseau* reconstitueReseauArbre(Chaines* C){
   ArbreQuat** a = &parent;
 
   for (tmpC = C->chaines; tmpC != NULL; tmpC = tmpC->suiv) {
-    cC = alloueCommodites("reconstitueReseauHachage");
+    cC = alloueCommodites("reconstitueReseauArbre");
     cC->extrA = rechercheCreeNoeudArbre(r, &parent, parent, tmpC->points->x, tmpC->points->y);
 
     for (tmpP = tmpC->points; tmpP != NULL; tmpP = tmpP->suiv){
@@ -128,6 +128,7 @@ Reseau* reconstitueReseauArbre(Chaines* C){
       if (tmpP->suiv != NULL){
         nSuiv = rechercheCreeNoeudArbre(r, a, parent, tmpP->suiv->x, tmpP->suiv->y);
       }
+      // mise a jour des voisins
       if (premier == 0) {
         if (tmpP->suiv != NULL)
           majVoisin(n, nSuiv);
@@ -145,6 +146,6 @@ Reseau* reconstitueReseauArbre(Chaines* C){
     cC->suiv = r->commodites;
     r->commodites = cC;
   }
-  // libererArbre(parent);
+  // libererArbre(parent);//leak a reparer
   return r;
 }

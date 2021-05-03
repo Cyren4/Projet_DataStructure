@@ -17,7 +17,7 @@ typedef struct arbreQuat{
 
 /* gestionArbreQuat.c */
 ArbreQuat*  creerArbreQuat(double xc, double yc, double coteX, double coteY);
-CellNoeud*  ajoutNoeudReseau(Reseau* R, double x, double y);
+CellNoeud*  ajoutCellNoeudReseau(Reseau* R, double x, double y);
 void        libererArbre(ArbreQuat* abrQ);
 
 /* ArbreQuat */

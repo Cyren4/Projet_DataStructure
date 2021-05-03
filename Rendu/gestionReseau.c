@@ -17,6 +17,15 @@ Noeud*  creerNoeud(int num, double x, double y){
   return v;
 }
 
+Noeud*   ajoutNoeudReseau(Reseau* R, double x, double y){
+  CellNoeud* tmpCN = alloueCellNoeud("ajoutNoeudReseau");
+  R->nbNoeuds++;
+  tmpCN->nd = creerNoeud(R->nbNoeuds, x, y);
+
+  tmpCN->suiv = R->noeuds;
+  R->noeuds = tmpCN;
+  return tmpCN->nd;
+}
 
 /*Allocation */
 
@@ -66,23 +75,34 @@ CellNoeud* alloueCellNoeud(char *message){
 
 /* Liberer */
 
-void    liberer_Reseau(Reseau* r){
-  if (r != NULL){
-    CellNoeud*      tmpN;
-    CellCommodite*  tmpK;
 
-    while (r->noeuds != NULL){
-      tmpN = r->noeuds;
-      r->noeuds = r->noeuds->suiv;
-      free(tmpN);
+void    liberer_Reseau(Reseau* r){
+  CellNoeud* tmpN = r->noeuds;
+  CellNoeud* tmpV;
+  CellNoeud* tmpNsupp;
+
+  while (tmpN) {
+    tmpV = tmpN->nd->voisins;
+    while (tmpV) {
+      tmpNsupp = tmpV;
+      tmpV = tmpV->suiv;
+      free(tmpNsupp);
+
     }
-    while (r->commodites != NULL){
-      tmpK = r->commodites;
-      r->commodites = r->commodites->suiv;
-      free(tmpK);
-    }
-    free(r);
+    tmpNsupp = tmpN;
+    tmpN = tmpN->suiv;
+    free(tmpNsupp->nd);
+    free(tmpNsupp);
   }
+
+  CellCommodite* tmpC = r->commodites;
+  CellCommodite* tmpCsupp;
+  while (tmpC) {
+    tmpCsupp = tmpC;
+    tmpC = tmpC->suiv;
+    free(tmpCsupp);
+  }
+  free(r);
 }
 
 /*Mise a jour Reseau */
@@ -94,6 +114,7 @@ void majVoisin(Noeud* n, Noeud* nvoisin){
   CellNoeud* cellNtmp = n->voisins;
   Noeud* voisin;
 
+  //recherche potentiel voisins
   while (cellNtmp) {
     voisin = cellNtmp->nd;
     if (nvoisin->x == voisin->x && nvoisin->y == voisin->y)
@@ -101,6 +122,7 @@ void majVoisin(Noeud* n, Noeud* nvoisin){
     cellNtmp = cellNtmp->suiv;
   }
 
+  //ajout du voisin
   cellNtmp = alloueCellNoeud("majVoisin");
   cellNtmp->nd = nvoisin;
   cellNtmp->suiv = n->voisins;

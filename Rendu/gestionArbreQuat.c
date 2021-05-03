@@ -1,7 +1,8 @@
 #include "ArbreQuat.h"
 #include "Reseau.h"
 
-//retourn la section auquels les coordonnées (x,y) appartiennent
+/* Creation */
+//retourne la section auquels les coordonnées (x,y) appartiennent
 
 ArbreQuat* creerArbreQuat(double xc, double yc, double coteX, double coteY){
     ArbreQuat* abrQ;
@@ -22,8 +23,7 @@ ArbreQuat* creerArbreQuat(double xc, double yc, double coteX, double coteY){
     return abrQ;
 }
 
-
-CellNoeud*   ajoutNoeudReseau(Reseau* R, double x, double y){
+CellNoeud*   ajoutCellNoeudReseau(Reseau* R, double x, double y){
   CellNoeud* tmpCN = alloueCellNoeud("ajoutNoeudReseau");
   R->nbNoeuds++;
   tmpCN->nd = creerNoeud(R->nbNoeuds, x, y);
@@ -33,18 +33,17 @@ CellNoeud*   ajoutNoeudReseau(Reseau* R, double x, double y){
   return tmpCN;
 }
 
-// void      libererArbre(ArbreQuat* abrQ){
-//   if (abrQ == NULL)
-//     return;
-//   if (abrQ->noeud)
-//     free(abrQ->noeud);
-//   if (abrQ->ne) 
-//     libererArbre(abrQ->ne);
-//   if (abrQ->no) 
-//     libererArbre(abrQ->no);
-//   if (abrQ->se) 
-//     libererArbre(abrQ->se);
-//   if (abrQ->so) 
-//     libererArbre(abrQ->so);
-//   free(abrQ);
-// }
+/* libère l'arbre */
+void      libererArbre(ArbreQuat* abrQ){
+  if (abrQ == NULL){
+    return;
+  }
+  if (abrQ->noeud != NULL){
+      free(abrQ->noeud);
+  }
+  libererArbre(abrQ->ne);
+  libererArbre(abrQ->no);
+  libererArbre(abrQ->se);
+  libererArbre(abrQ->so);
+  free(abrQ);
+}

@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "Reseau.h"
+#include "Struct_File.h"
 #include "Struct_Liste.h"
 
 typedef struct{
@@ -45,6 +46,9 @@ Cellule_arete*  insererArrete(Cellule_arete* L_voisin, int u, int v);
 Cellule_arete*  ajoutArrete(CellNoeud* n, int num);
 void            majArrete(Graphe* g);
 Cellule_arete*  enteteArrete(Cellule_arete* tete, Arete* a);
-void    libererGraphe(Graphe *g);
+void            libererGraphe(Graphe *g);
+int             tailleCheminCourt(Graphe* g, int u, int v);
+int             reorganiseReseau(Reseau* r);
+ListeEntier*    cheminCourt(Graphe* g, int u, int v);
 
 #endif

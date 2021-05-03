@@ -75,5 +75,3 @@ void    liberer_Chaines(Chaines* c){
         free(c);
     }
 }
-
-// void    liberer_Liste(Chaines* c){

@@ -5,22 +5,15 @@
 Noeud* rechercheCreeNoeudListe(Reseau *R, double x, double y){
   CellNoeud* tmpCellNoeud = R->noeuds;
   Noeud* tmpNoeud;
-
-  while (tmpCellNoeud) {
+  //recherche du noeud
+  while (tmpCellNoeud) { 
     tmpNoeud = tmpCellNoeud->nd;
     if (tmpNoeud->x == x && tmpNoeud->y == y)
       return tmpNoeud;
     tmpCellNoeud = tmpCellNoeud->suiv;
   }
   //aucun noeud en (x,y). Creation: 
-  tmpCellNoeud = alloueCellNoeud("rechercheCreeNoeudListe");
-  R->nbNoeuds++;
-  tmpCellNoeud->nd = creerNoeud(R->nbNoeuds, x, y);
-
-  tmpCellNoeud->suiv = R->noeuds;
-  R->noeuds = tmpCellNoeud;
-
-  return tmpCellNoeud->nd;
+  return ajoutNoeudReseau(R,x,y);
 }
 
 Reseau* reconstitueReseauListe(Chaines *c){
@@ -30,6 +23,7 @@ Reseau* reconstitueReseauListe(Chaines *c){
   CellPoint* tmpP;
   Noeud* n, *nSuiv, *nPrec;
 
+  //si on est au premier élément de la liste alors on ne fait la maj des voisins que du suivant, sinon du suivant et précédent
   int premier = 0;
   r->nbNoeuds = 0;
   r->gamma = c->gamma;
@@ -42,6 +36,7 @@ Reseau* reconstitueReseauListe(Chaines *c){
       n = rechercheCreeNoeudListe(r, tmpP->x, tmpP->y);
       if (tmpP->suiv != NULL)
         nSuiv = rechercheCreeNoeudListe(r, tmpP->suiv->x, tmpP->suiv->y);
+      // mise a jour des voisins
       if (premier == 0) {
         if (tmpP->suiv != NULL)
           majVoisin(n,nSuiv);

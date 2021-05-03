@@ -16,5 +16,6 @@ int             fonctionClef2(double x, double y);
 TableHachage*   creerTable(int m);
 Noeud*          rechercheCreeNoeudHachage(Reseau* R, TableHachage*H, double x, double y);
 Reseau*         reconstitueReseauHachage(Chaines *C, int M);
+void            freeHachage(TableHachage *t);
 
 #endif

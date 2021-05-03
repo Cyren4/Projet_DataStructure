@@ -1,6 +1,7 @@
 #include "Hachage.h"
 #include "Reseau.h"
 
+/* convertie x et y en clef */
 int     fonctionClef(double x, double y){
     return (int)(y + (x + y)*(x + y + 1) / 2);
 }
@@ -10,12 +11,7 @@ int     fonctionHachage(int cle, int m){
   return (m * (cle * a - (int)(cle * a)));
 }
 
-
-int     fonctionClef2(double x, double y){
-  double a = (sqrt(5)-1) / 2;
-  return a;
-}
-
+/* création de la table de Hachage */
 TableHachage* creerTable(int m){
   TableHachage* t;
   if (!(t = malloc(sizeof(TableHachage)))){
@@ -33,10 +29,29 @@ TableHachage* creerTable(int m){
   return t;
 }
 
+/* liberer Table de Hachage */
+
+void freeHachage(TableHachage *t){
+  CellNoeud** tmpN = t->noeuds;
+  CellNoeud* tmpNs;
+  CellNoeud* tmpNsupp;
+  for (int i = 0; i < t->m; i++) {
+    tmpNs = tmpN[i] ;
+    while (tmpNs) {
+      tmpNsupp = tmpNs;
+      tmpNs = tmpNs->suiv;
+      free(tmpNsupp);
+    }
+  }
+  free(t->noeuds);
+  free(t);
+}
+
 Noeud* rechercheCreeNoeudHachage(Reseau* R, TableHachage*H, double x, double y){
   int index = fonctionHachage(fonctionClef(x,y),H->m);
   CellNoeud* tmpCellNoeud = H->noeuds[index];
 
+  //recherche du noeud potentiel
   while(tmpCellNoeud){
     if (tmpCellNoeud->nd->x == x && tmpCellNoeud->nd->y == y)
       return tmpCellNoeud->nd;
@@ -46,15 +61,18 @@ Noeud* rechercheCreeNoeudHachage(Reseau* R, TableHachage*H, double x, double y){
   H->nbE++;
   R->nbNoeuds++;
 
+  // création des noeuds a ajouter (table + reseau)
   Noeud* n = creerNoeud(R->nbNoeuds, x, y);
-  Noeud* nH = creerNoeud(R->nbNoeuds, x, y);
+  // Noeud* nH = creerNoeud(R->nbNoeuds, x, y);
   tmpCellNoeud = alloueCellNoeud("rechercheCreeNoeudHachage");
   CellNoeud* tmpCH = alloueCellNoeud("rechercheCreeNoeudHachage");
 
+  //ajout du noeud dans le réseau
   tmpCellNoeud->nd = n;
   tmpCellNoeud->suiv = R->noeuds;
   R->noeuds = tmpCellNoeud;
 
+  //ajout du noeud dans la table
   tmpCH->nd = n;
   tmpCH->suiv = H->noeuds[index];
   H->noeuds[index] = tmpCH;
@@ -62,42 +80,19 @@ Noeud* rechercheCreeNoeudHachage(Reseau* R, TableHachage*H, double x, double y){
   return n;
 }
 
-/* free  a corriger */
-/*
-void freeCellNoeud(CellNoeud* c){
-  free(c->nd);
-  free(c);
-}
-
-void freeCellCommodite(CellCommodite* c){
-  free(c->extrA);
-  free(c->extrB);
-  free(c);
-}
-
-
-void freeHachage(TableHachage* t){
-  for (int i = 0; i < t->m; i++) {
-    freeCellNoeud(t->noeuds[i]);
-  }
-  free(t->noeuds);
-  free(t);
-}
-*/
-
+/* Reconstitue */
 
 Reseau* reconstitueReseauHachage(Chaines *C, int M){
   Reseau* r = alloueReseau("reconstitueReseauHachage");
   CellCommodite* cC;
   TableHachage* t = creerTable(M);
-  CellChaine* tmpC;
   CellPoint* tmpP;
   Noeud* n,*nSuiv,*nPrec;
   r->nbNoeuds = 0;
   r->gamma = C->gamma;
   int premier = 0;
 
-  for (tmpC = C->chaines; tmpC != NULL; tmpC = tmpC->suiv) {
+  for (CellChaine* tmpC = C->chaines; tmpC != NULL; tmpC = tmpC->suiv) {
     cC = alloueCommodites("reconstitueReseauHachage");
     cC->extrA = rechercheCreeNoeudHachage(r, t, tmpC->points->x, tmpC->points->y);
 
@@ -120,10 +115,9 @@ Reseau* reconstitueReseauHachage(Chaines *C, int M){
     premier = 0;
 
     cC->extrB = n;
-    /*printf("%f %f\n",cC->extrA->x, cC->extrA->y);*/
     cC->suiv = r->commodites;
     r->commodites = cC;
   }
-  // freeHachage(t);
+  freeHachage(t);
   return r;
 }
