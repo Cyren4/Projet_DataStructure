@@ -17,10 +17,12 @@ SRCS	=	gestionChaine.c gestionReseau.c gestionGraphe.c\
 			ArbreQuat.c gestionArbreQuat.c\
 			Graphe.c\
 			Struct_File.c Struct_Liste.c\
+			testFunction.c \
 			ReconstitueReseau.c
-			# TimeMain.c
 			# ChaineMain.c
 			# ReseauMain.c
+			# speedtest6_1.c
+			# speedtest6_3.c
 
 projet :	$(OBJS)
 			$(CC) -o $@ $(CFLAGS) $^ 

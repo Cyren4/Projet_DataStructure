@@ -2,35 +2,9 @@
 #include "Hachage.h"
 #include "ArbreQuat.h"
 #include "Graphe.h"
-#define TEST 3
+#include "testFunction.h"
 
 
-void  testEcritureReseau(Reseau *r){
-  FILE*     fr = fopen("Reconstitue.res","w");
-
-  if (fr == NULL)
-    return;
-  ecrireReseau(r, fr);
-  fclose(fr);
-}
-
-void afficheArrete(Graphe* g){
-  printf("g : %d %d %d\n", g->gamma, g->nbcommod, g->nbsom);
-  for(int i = 0; i < g->nbsom; i++){
-    printf("Sommet %d\n", i);
-    for (Cellule_arete* tmpC = g->T_som[i]->L_voisin; tmpC != NULL; tmpC = tmpC->suiv)
-      printf("%d %d \n", tmpC->a->u, tmpC->a->v);
-  }
-}
-
-void  testChemin(Graphe *g){
-  printf("\n\nChemin le plus court entre {%d, %d} de taille %d\n", g->T_commod[TEST].e1, g->T_commod[TEST].e2, tailleCheminCourt(g, g->T_commod[TEST].e1, g->T_commod[TEST].e2));
-  ListeEntier* L = cheminCourt(g, g->T_commod[TEST].e1, g->T_commod[TEST].e2);
-  for (ListeEntier c = *L; c != NULL; c = c->suiv)
-    printf("%d ", c->u);
-  desalloue(L);
-  free(L);
-}
 
 //return -1 si les arguments en ligne de commande ne sont pas valide
 //return numero associé a une structure sinon
@@ -57,17 +31,6 @@ static Chaines*  check_args(int ac, char **av, int* typeStruc){
   return c;
 }
 
-static void propChaine(Chaines *c){
-  printf("Longueur physique de la 1ere chaine : %.2f\n", longueurChaine(c->chaines));
-  printf("Longueur physique totale des chaines : %.2f\n", longueurTotale(c));
-  printf("Nombre total de points : %d\n", comptePointsTotal(c));
-}
-
-static void propReseau(Reseau *r){
-  printf("Nombre de commodité : %d\n", nbCommodites(r));
-  printf("Nombre de liaisons : %d\n", nbLiaisons(r));
-  printf("Nombre de Noeuds : %d\n", r->nbNoeuds);
-}
 
 int main(int ac, char** av){
   int typeStruc;
@@ -76,7 +39,6 @@ int main(int ac, char** av){
   if ((c = check_args(ac, av, &typeStruc)) == NULL)
     return -1;
   Reseau *r = NULL;
-
 
   switch (typeStruc){
   case 1:
@@ -98,16 +60,22 @@ int main(int ac, char** av){
     break;
   }
 
-  propChaine(c);//affiche les propriété de la chaine lu
-  propReseau(r);//affiche les propriété du reseau reconstitué
+/* commenter pour ne plus afficher les proprietes */
+  propChaine(c);
+  propReseau(r);
 
+/* decommenter pour creer les fichiers SVG */
   // afficheReseauSVG(r, "nomInstanceReseau");
   // afficheChainesSVG(c, "nomInstanceChaine");
+
+/* Partie Optimisation du reseau */
   Graphe* g  = creerGraphe(r);
   
   // afficheArrete(g);
-  // testChemin(g);
-  printf("reorganise : %d\n", reorganiseReseau(r));
+  // afficheCommodite(g);
+  // testChemin(g, 7, 11);
+  // testCheminCommod(g, 0);
+  // printf("Reorganise : %s\n", reorganiseReseau(r) == 1 ? "Vrai" : "Faux");
   
 
   libererGraphe(g);

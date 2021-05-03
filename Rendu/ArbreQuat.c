@@ -146,6 +146,6 @@ Reseau* reconstitueReseauArbre(Chaines* C){
     cC->suiv = r->commodites;
     r->commodites = cC;
   }
-  // libererArbre(parent);//leak a reparer
+  //  libererArbre(parent);//leak a reparer
   return r;
 }
