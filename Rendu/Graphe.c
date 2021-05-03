@@ -5,13 +5,13 @@
 Graphe*     creerGraphe(Reseau* r){
     Graphe *g;
 
-    g->nbcommod = nbCommodites(r);
-    g->nbsom = r->nbNoeuds;
     if (!(g = malloc(sizeof(Graphe)))){
         printf("Erreur allocation : creerGraphe\n");
         return NULL;
     }
     g->gamma = r->gamma;
+    g->nbcommod = nbCommodites(r);
+    g->nbsom = r->nbNoeuds;
     if (!(g->T_commod = malloc(sizeof(Commod) * nbCommodites(r)))){
         printf("Erreur allocation : creerGraphe\n");
         return NULL;
