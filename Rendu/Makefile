@@ -9,7 +9,7 @@ all     :	$(EXEC)
 
 OBJS	=	${SRCS:.c=.o}
 
-SRCS	=	gestionChaine.c gestionReseau.c\
+SRCS	=	gestionChaine.c gestionReseau.c gestionGraphe.c\
 			Chaine.c        Reseau.c\
 			mesureChaine.c  mesureReseau.c\
 			SVGwriter.c\

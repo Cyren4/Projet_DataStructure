@@ -41,14 +41,17 @@ typedef struct{
 /*  Graphe.c  */
 
 Graphe*         creerGraphe(Reseau* r);
-Sommet*         creerSommet(CellNoeud *n, int num);
-Cellule_arete*  insererArrete(Cellule_arete* L_voisin, int u, int v);
-Cellule_arete*  ajoutArrete(CellNoeud* n, int num);
-void            majArrete(Graphe* g);
-Cellule_arete*  enteteArrete(Cellule_arete* tete, Arete* a);
-void            libererGraphe(Graphe *g);
 int             tailleCheminCourt(Graphe* g, int u, int v);
 int             reorganiseReseau(Reseau* r);
 ListeEntier*    cheminCourt(Graphe* g, int u, int v);
+
+/*  gestionGraphe.c */
+
+Sommet*         creerSommet(CellNoeud *n, int num);
+Cellule_arete*  ajoutArrete(CellNoeud* n, int num);
+Cellule_arete*  insererArrete(Cellule_arete* L_voisin, int u, int v);
+void            majArrete(Graphe* g);
+Cellule_arete*  enteteArrete(Cellule_arete* tete, Arete* a);
+void            libererGraphe(Graphe *g);
 
 #endif
