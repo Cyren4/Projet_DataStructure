@@ -2,7 +2,7 @@
 #include <time.h>
 #include "Hachage.h"
 #include "Reseau.h"
-#include "chaine.h"
+#include "Chaine.h"
 #include "ArbreQuat.h"
 
 int main(){
