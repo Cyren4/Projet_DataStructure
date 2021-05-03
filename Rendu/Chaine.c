@@ -26,7 +26,7 @@ static CellPoint*  lire_points(char* ligne, int nbP){//lit les nbP points d'une 
 }
 
 Chaines*    lectureChaines(FILE *f){
-    char    ligne[256];
+    char    ligne[10001];
     int     nbChain,nbChaines;
     int     gamma;
     int     numChaine;
@@ -34,23 +34,22 @@ Chaines*    lectureChaines(FILE *f){
     CellChaine* cellChain = NULL;
     Chaines*    c = NULL;
 
-    fgets(ligne, 256, f);
+    fgets(ligne, 10000, f);
     if (sscanf(ligne, "NbChain: %d", &nbChain) != 1){
         printf("Erreur lecture : lectureChaines - NbChain\n");
         return NULL;
     }
     nbChaines = nbChain;
-    fgets(ligne, 256, f);
+    fgets(ligne, 10000, f);
     if (sscanf(ligne, "Gamma: %d", &gamma) != 1){
         printf("Erreur lecture : lectureChaines - Gamma\n");
         return NULL;
     }
-    fgets(ligne, 256, f);
-    if (*ligne != '\n'){
-      printf("Erreur de format : lectureChaines");
-      return NULL;
-    }
-    while (fgets(ligne, 256, f) && nbChain > 0){//recupere les nbChaine
+
+    while (fgets(ligne, 10000, f) && nbChain > 0){//recupere les nbChaine
+      while (*ligne == '\n') {
+        fgets(ligne, 10000, f);
+      }
         if (sscanf(ligne, "%d %d", &numChaine, &nbPoints) != 2){
             printf("Erreur lecture : lectureChaines - ligne\n");
             return NULL;
@@ -61,6 +60,7 @@ Chaines*    lectureChaines(FILE *f){
     c = creer_Chaines(gamma, nbChaines, cellChain);
     return c;
 }
+
 
 void ecrireChaines(Chaines *c, FILE *f){
     CellChaine* tmpChaine = c->chaines;
