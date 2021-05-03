@@ -176,7 +176,7 @@ ListeEntier*        cheminCourt(Graphe* g, int u, int v){
 //0 sinon
 //et met a jour la matrice des passage par cette arrete
 int     majMatrice(int size, int gamma, int mat[size][size], ListeEntier* L){
-    for(ListeEntier tmpL = *L; tmpL != NULL; tmpL = tmpL->suiv){
+    for (ListeEntier tmpL = *L; tmpL != NULL; tmpL = tmpL->suiv){
         // printf("%d ", tmpL->u);
         if (tmpL->suiv == NULL)
             return 1;
@@ -189,9 +189,9 @@ int     majMatrice(int size, int gamma, int mat[size][size], ListeEntier* L){
 
 int reorganiseReseau(Reseau* r){
     Graphe* g = creerGraphe(r); 
-    ListeEntier* L;
-    int ret = 1;    
     int  matriceAr[g->nbsom][g->nbsom];
+    int ret = 1;
+    ListeEntier* L;
 
     for (int i = 0; i < g->nbsom; i++)
         for (int j = 0; j < g->nbsom; j++) 
@@ -200,15 +200,15 @@ int reorganiseReseau(Reseau* r){
     // printf("Calcul plus courte chaines entre commodités {u, v} : \n");
     for (int i = 0; i < g->nbcommod; i++){
         // printf("\n\nCommodité %d : {%d, %d} = %d\n", i, g->T_commod[i].e1, g->T_commod[i].e2, tailleCheminCourt(g, g->T_commod[i].e1, g->T_commod[i].e2));
-        L = cheminCourt(g, g->T_commod[i].e1, g->T_commod[i].e2);
+	    L = cheminCourt(g, g->T_commod[i].e1, g->T_commod[i].e2);
         if (majMatrice(g->nbsom, g->gamma, matriceAr, L) == 0){
-            ret = 0;
             desalloue(L);
-            // free(L);
-            break;
+            free(L);
+            ret = 0;
+	    break;
         }
         desalloue(L);
-        // free(L);
+        free(L);
     }
     // printf("\n\n");
     // for (int i = 0; i < g->nbsom; i++){
@@ -216,6 +216,6 @@ int reorganiseReseau(Reseau* r){
     //         printf("%d ", matriceAr[i][j]);
     //     printf("\n");
     // }
-
+  libererGraphe(g);
     return ret;
 }
