@@ -10,8 +10,8 @@ Graphe*     creerGraphe(Reseau* r){
         return NULL;
     }
     g->gamma = r->gamma;
-    g->nbcommod = nbCommodites(r);
-    g->nbsom = r->nbNoeuds;
+    g->nbcommod = 0;
+    g->nbsom = 0;
     if (!(g->T_commod = malloc(sizeof(Commod) * nbCommodites(r)))){
         printf("Erreur allocation : creerGraphe\n");
         return NULL;
@@ -23,12 +23,14 @@ Graphe*     creerGraphe(Reseau* r){
     //creation des sommet avec liste voisins vide
     for (CellNoeud *n = r->noeuds; n != NULL; n = n->suiv){
         g->T_som[n->nd->num - 1] = creerSommet(n, n->nd->num - 1);
+        g->nbsom++;
     }
 
     //creation des commodités
     for (CellCommodite *c = r->commodites; c != NULL; c = c->suiv){
         g->T_commod[g->nbcommod].e1 = c->extrA->num - 1;
         g->T_commod[g->nbcommod].e2 = c->extrB->num - 1;
+        g->nbcommod++;
     }
 
     //creation liste de voisins avec arretes des sommets v
