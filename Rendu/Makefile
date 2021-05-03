@@ -16,6 +16,7 @@ SRCS	=	gestionChaine.c gestionReseau.c\
 			Hachage.c\
 			ArbreQuat.c gestionArbreQuat.c\
 			Graphe.c\
+			Struct_File.c Struct_Liste.c\
 			ReconstitueReseau.c
 			# TimeMain.c
 			# ChaineMain.c
