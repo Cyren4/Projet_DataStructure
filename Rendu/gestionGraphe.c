@@ -49,7 +49,6 @@ Cellule_arete*  insererArrete(Cellule_arete* L_voisin, int u, int v){
 
 //ajoute les arrete dans la liste des voisins u
 void    majArrete(Graphe* g){
-    // Cellule_arete* new = NULL; //arrete temporaire
 
     for (int i = 0; i < g->nbsom; i++) // parcours sommets
         for (Cellule_arete* v = g->T_som[i]->L_voisin; v != NULL; v = v->suiv) //parcours liste voisins

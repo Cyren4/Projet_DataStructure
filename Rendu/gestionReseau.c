@@ -1,6 +1,6 @@
 #include "Reseau.h"
 
-/*Creation */
+/*Creation Noeud */
 
 Noeud*  creerNoeud(int num, double x, double y){
   Noeud*  v;

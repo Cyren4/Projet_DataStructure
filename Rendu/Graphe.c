@@ -1,6 +1,6 @@
 #include "Graphe.h"
 
-/* Creation */
+/* Creation Graphe */
 
 Graphe*     creerGraphe(Reseau* r){
     Graphe *g;
@@ -41,6 +41,8 @@ Graphe*     creerGraphe(Reseau* r){
 }
 
 /* 7.2 calcule chemin le plus court entre u et v */
+
+/* libere la file */
 static void  liberer_file(S_file *f){
     if (f == NULL)
         return;
@@ -75,7 +77,6 @@ int             tailleCheminCourt(Graphe* g, int u, int v){
 
         Cellule_arete* curA = g->T_som[curU]->L_voisin;
         while (curA != NULL){
-            // printf("cur : %d %d | cpt = %d\n", curA->a->u, curA->a->v, cpt);
             if (curA->a->v == curU)
                 curV = curA->a->u;
             else 
@@ -98,7 +99,6 @@ int             tailleCheminCourt(Graphe* g, int u, int v){
 }
 
 
-
 ListeEntier*    getChaine(int size, int mat[size][size], int *D,  int u, int v){
     ListeEntier*  L = malloc(sizeof(ListeEntier));
     int next = v;
@@ -115,8 +115,6 @@ ListeEntier*    getChaine(int size, int mat[size][size], int *D,  int u, int v){
         }
     }
     ajoute_en_tete(L, u);
-    // for (ListeEntier tmpL = *L; tmpL != NULL; tmpL = tmpL->suiv)
-        // printf("|%d|\n", tmpL->u);
     return L;
 } 
 
@@ -148,7 +146,6 @@ ListeEntier*        cheminCourt(Graphe* g, int u, int v){
 
         Cellule_arete* curA = g->T_som[curU]->L_voisin;
         while (curA != NULL){
-            // printf("cur : %d %d | cpt = %d\n", curA->a->u, curA->a->v, cpt);
             if (curA->a->v == curU)
                 curV = curA->a->u;
             else 
@@ -177,7 +174,6 @@ ListeEntier*        cheminCourt(Graphe* g, int u, int v){
 //et met a jour la matrice des passage par cette arrete
 int     majMatrice(int size, int gamma, int mat[size][size], ListeEntier* L){
     for (ListeEntier tmpL = *L; tmpL != NULL; tmpL = tmpL->suiv){
-        // printf("%d ", tmpL->u);
         if (tmpL->suiv == NULL)
             return 1;
         mat[tmpL->u][tmpL->suiv->u]++;
@@ -210,12 +206,6 @@ int reorganiseReseau(Reseau* r){
         desalloue(L);
         free(L);
     }
-    // printf("\n\n");
-    // for (int i = 0; i < g->nbsom; i++){
-    //     for (int j = 0; j < g->nbsom; j++)
-    //         printf("%d ", matriceAr[i][j]);
-    //     printf("\n");
-    // }
-  libererGraphe(g);
+    libererGraphe(g);
     return ret;
 }
