@@ -1,7 +1,9 @@
-# __MiniProjet 2__
+# __Projet Structure de Donnees__
 Olando Bazil 28608499
 Cyrena Ramdani 3805942
 
-Rendu Disponible :
+## MiniProjet1
 
-https://docs.google.com/document/d/1Bc68TYhmV1LkaquUY3A4qDF-d81HPfyBUhPzeS-jTcI/edit?usp=sharing
+## MiniProjet2
+
+## Projet
